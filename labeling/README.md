@@ -156,6 +156,7 @@ For example, for this categorical dummy label (lets say ```img1.png```) :
 backgound - black, building - red, road - blue, water - green.
 
 **IMPORTANT**: Check that the human annotated drone labels have the same format. Check the function ```change_human_drone_anns()``` from ```organise.py```.
+Make sure that the human labels are also under ```data``` folder, as suggested in the above project tree structure.
 
 Images from our dataset are satellite and drone images of 5280 x 3956 pixels. There are 4 classes in total, i.e. 'background', 'building', 'road' and 'water'.
 

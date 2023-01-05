@@ -43,25 +43,31 @@ def rename_duplicates_morges_vevey(dataset_root):
                 os.rename(os.path.join(data_path, file), os.path.join(data_path, new_name))
 
 
-def change_human_drone_anns(dataset_root, human_label_dir='drone_human_labels'):
+def change_human_drone_anns(dataset_root, human_label_dir, data_root='data', new_human_dir='human_drone_dir'):
     """
     Change the format of human annotated drone labels and save them.
     :param dataset_root: Dataset root directory (current)
-    :param human_label_dir: Human labels for drone images directory
+    :param human_label_dir: Human annotations for drone images directory name
+    :param data_root: New data root directory
+    :param new_human_dir: New name for human labels directory
     """
     labels_dir = os.path.join(dataset_root, human_label_dir)
+    new_human_labels_dir = os.path.join('../', data_root, new_human_dir)
     for file in os.listdir(labels_dir):
         filename = file.split('.')[0]
         new_file = '_'.join(filename.split("_")[:3]) + '.' + file.split('.')[1]
+        # Read image
         label = Image.open(os.path.join(labels_dir, file))
         label_array = np.array(label)
+        # Transform into categorical format
         output_cat = np.zeros((label_array.shape[0], label_array.shape[1]))
         output_cat[np.where(label_array[:, :, 0] == 255)] = 1
         output_cat[np.where(label_array[:, :, 1] == 255)] = 2
         output_cat[np.where(label_array[:, :, 2] == 255)] = 3
+        # Convert to 'P' mode and add the palette
         seg_img = Image.fromarray(output_cat.astype(np.uint8)).convert('P')
         seg_img.putpalette(np.array([[0, 0, 0], [255, 0, 0], [0, 255, 0], [0, 0, 255]], dtype=np.uint8))
-        seg_img.save(os.path.join(labels_dir, new_file))
+        seg_img.save(os.path.join(new_human_labels_dir, new_file))
 
 
 def organise_dir_struct(old_dataset_root, old_images_root, new_dataset_name, data_root='data', img_dir_name='img_dir',
@@ -71,7 +77,7 @@ def organise_dir_struct(old_dataset_root, old_images_root, new_dataset_name, dat
     :param old_dataset_root: Dataset root directory (current)
     :param old_images_root: Drone images, satellite images, maperitive labels, raster images directory (current)
     :param new_dataset_name: Dataset name in the new folder structure
-    :param data_root: Dataset root directory
+    :param data_root: New data root directory
     :param img_dir_name: Satellite images directory
     :param ann_dir_name: Satellite labels directory
     :param drone_dir_name: Drone images directory
