@@ -22,4 +22,5 @@ The ```SCOT``` folder contains the code for SCOT algorithm. This algorithm must 
 
 The ```TPS_LoFTR``` folder contains the code for LoFTR and TPS and must be run in a Google Colab environment. The entire code can be found in this [TPS_LoFTR notebook](TPS_LoFTR/TPS_LoFTR.ipynb), containing further explanations, usage instructions and environment setup.
 
-
+The ```MMSegmentation.ipynb``` [notebook](MMSegmentation.ipynb) contains the code for training and testing the semantic segmentation networks (DeepLavV3+ and UNet)
+and for comparing the differently warped drone labels with the human annotated drone labels.
